@@ -10,17 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.R
 import com.example.movieapp.model.Film
 
-class RecyclerViewAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
-    RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
+class RecyclerViewFilmsAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
+    RecyclerView.Adapter<RecyclerViewFilmsAdapter.MyViewHolder>() {
     private var dataSource: List<Film> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
+        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_view_films, parent, false)
         return MyViewHolder(v)
-    }
-
-    fun removeListener() {
-        onItemViewClickListener = null
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -49,7 +45,7 @@ class RecyclerViewAdapter(private var onItemViewClickListener: MainFragment.OnIt
             var iconIV = itemView.findViewById<AppCompatImageView>(R.id.poster)
             iconIV.setImageResource(R.drawable.screen)
 
-            itemView.findViewById<CardView>(R.id.card_view_root).setOnClickListener({
+            itemView.findViewById<CardView>(R.id.item_view_root).setOnClickListener({
                 onItemViewClickListener?.onItemViewClick(film)
             }
 

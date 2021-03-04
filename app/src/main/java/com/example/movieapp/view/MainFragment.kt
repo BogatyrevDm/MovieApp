@@ -21,7 +21,7 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var recyclerView: RecyclerView
-    private var adapter = RecyclerViewAdapter(object : OnItemViewClickListener {
+    private var adapter = RecyclerViewCategoriesAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(film: Film) {
             val manager = activity?.supportFragmentManager
             if (manager != null) {
@@ -40,16 +40,16 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val view: View = inflater.inflate(R.layout.main_fragment, container, false)
+        val view: View = inflater.inflate(R.layout.item_view_categories, container, false)
         initList(view)
         return view
     }
 
     private fun initList(view: View) {
-        recyclerView = view.findViewById(R.id.latest_rv)
+        recyclerView = view.findViewById(R.id.category_rv)
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(context)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -62,22 +62,17 @@ class MainFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                adapter.setFilms(appState.movieData)
+                adapter.setCategories(appState.movieData)
                 adapter.notifyDataSetChanged()
             }
             is AppState.Error -> {
-                adapter.setFilms(listOf())
+                adapter.setCategories(mapOf())
                 adapter.notifyDataSetChanged()
             }
             is AppState.Loading -> {
 
             }
         }
-    }
-
-    override fun onDestroy() {
-        adapter.removeListener()
-        super.onDestroy()
     }
 
     interface OnItemViewClickListener {
