@@ -15,7 +15,8 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
     private var dataSource: Map<Categories, List<Film>> = mapOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_view_categories, parent, false)
+        val v: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_view_categories, parent, false)
         return MyViewHolder(v)
     }
 
@@ -33,7 +34,7 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun onBind(title:String,films: List<Film>?) {
+        fun onBind(title: String, films: List<Film>?) {
 
             var titleTV = itemView.findViewById<TextView>(R.id.category_title)
             titleTV.text = title
@@ -46,24 +47,6 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
             recyclerView.adapter = adapter
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-
-//            var titleTV = itemView.findViewById<TextView>(R.id.title)
-//            titleTV.text = film.title
-//
-//            var averageVoteTV = itemView.findViewById<TextView>(R.id.average_vote)
-//            averageVoteTV.text = film.averageVote.toString()
-//
-//            var releasDateTV = itemView.findViewById<TextView>(R.id.releas_date)
-//            releasDateTV.text = film.releaseDate
-//
-//            var iconIV = itemView.findViewById<AppCompatImageView>(R.id.poster)
-//            iconIV.setImageResource(R.drawable.screen)
-//
-//            itemView.findViewById<CardView>(R.id.card_view_root).setOnClickListener({
-//                onItemViewClickListener?.onItemViewClick(film)
-//            }
-
-            //            )
         }
     }
 }
