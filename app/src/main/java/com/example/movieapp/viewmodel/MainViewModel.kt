@@ -6,8 +6,8 @@ import com.example.movieapp.model.Repository
 import com.example.movieapp.model.RepositoryImpl
 
 class MainViewModel(
-        private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
-        private val repositoryIml: Repository = RepositoryImpl()
+    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
+    private val repositoryIml: Repository = RepositoryImpl()
 ) : ViewModel() {
     fun getLiveData() = liveDataToObserve
     fun getDataFromLocalStorage() = getFilmsFromLocalStorage()
