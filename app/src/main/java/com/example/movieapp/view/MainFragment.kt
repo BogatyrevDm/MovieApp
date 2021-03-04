@@ -39,10 +39,12 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        return inflater.inflate(R.layout.item_view_categories, container, false)
+    }
 
-        val view: View = inflater.inflate(R.layout.item_view_categories, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initList(view)
-        return view
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initList(view: View) {
