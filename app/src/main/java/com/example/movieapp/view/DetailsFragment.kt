@@ -42,7 +42,7 @@ class DetailsFragment : Fragment() {
     }
 
     companion object {
-        const val BUNDLE_EXTRA = "film"
+        private const val BUNDLE_EXTRA = "film"
         fun newInstance(film: Film): DetailsFragment {
             val fragment = DetailsFragment()
             val bundle = Bundle()
