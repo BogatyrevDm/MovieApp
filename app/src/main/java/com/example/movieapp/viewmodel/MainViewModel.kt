@@ -6,8 +6,8 @@ import com.example.movieapp.model.Repository
 import com.example.movieapp.model.RepositoryImpl
 
 class MainViewModel(
-        private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
-        private val repositoryIml: Repository = RepositoryImpl()
+    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
+    private val repositoryIml: Repository = RepositoryImpl()
 ) : ViewModel() {
     fun getLiveData() = liveDataToObserve
     fun getDataFromLocalStorage() = getFilmsFromLocalStorage()
@@ -16,7 +16,7 @@ class MainViewModel(
         liveDataToObserve.value = AppState.Loading
         Thread {
             Thread.sleep(1000)
-            liveDataToObserve.postValue(AppState.Success(repositoryIml.getFilmsFromLocalStorage()))
+            liveDataToObserve.postValue(AppState.Success(repositoryIml.getFilmCategories()))
         }.start()
     }
 

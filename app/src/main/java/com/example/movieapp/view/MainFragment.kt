@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.R
+import com.example.movieapp.model.Film
 import com.example.movieapp.viewmodel.AppState
 import com.example.movieapp.viewmodel.MainViewModel
 
@@ -20,21 +21,37 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var recyclerView: RecyclerView
-    private var adapter = RecyclerViewAdapter()
+    private var adapter = RecyclerViewCategoriesAdapter(object : OnItemViewClickListener {
+        override fun onItemViewClick(film: Film) {
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
+                manager.beginTransaction()
+                    .replace(R.id.container, DetailsFragment.newInstance(film))
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
+            }
+        }
+
+    })
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.item_view_categories, container, false)
+    }
 
-        val view: View = inflater.inflate(R.layout.main_fragment, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initList(view)
-        return view
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initList(view: View) {
-        recyclerView = view.findViewById(R.id.latest_rv)
+        recyclerView = view.findViewById(R.id.category_rv)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(context)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,11 +64,11 @@ class MainFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                adapter.setFilms(appState.movieData)
+                adapter.setCategories(appState.movieData)
                 adapter.notifyDataSetChanged()
             }
             is AppState.Error -> {
-                adapter.setFilms(listOf())
+                adapter.setCategories(mapOf())
                 adapter.notifyDataSetChanged()
             }
             is AppState.Loading -> {
@@ -60,4 +77,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    interface OnItemViewClickListener {
+        fun onItemViewClick(film: Film)
+    }
 }

@@ -9,5 +9,7 @@ class RepositoryImpl : Repository {
         return listOf(Film(), Film(), Film())
     }
 
-
+    override fun getFilmCategories(): Map<Categories, List<Film>> {
+        return GetCategoriesList()
+    }
 }

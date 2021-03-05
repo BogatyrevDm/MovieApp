@@ -5,15 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.R
 import com.example.movieapp.model.Film
 
-class RecyclerViewAdapter() : RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
+class RecyclerViewFilmsAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
+    RecyclerView.Adapter<RecyclerViewFilmsAdapter.MyViewHolder>() {
     private var dataSource: List<Film> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
+        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_view_films, parent, false)
         return MyViewHolder(v)
     }
 
@@ -29,7 +31,7 @@ class RecyclerViewAdapter() : RecyclerView.Adapter<RecyclerViewAdapter.MyViewHol
         dataSource = films
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onBind(film: Film) {
             var titleTV = itemView.findViewById<TextView>(R.id.title)
             titleTV.text = film.title
@@ -43,6 +45,11 @@ class RecyclerViewAdapter() : RecyclerView.Adapter<RecyclerViewAdapter.MyViewHol
             var iconIV = itemView.findViewById<AppCompatImageView>(R.id.poster)
             iconIV.setImageResource(R.drawable.screen)
 
+            itemView.findViewById<CardView>(R.id.item_view_root).setOnClickListener({
+                onItemViewClickListener?.onItemViewClick(film)
+            }
+
+            )
         }
     }
 }
