@@ -19,13 +19,12 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy{ViewModelProvider(this).get(MainViewModel::class.java)}
     private lateinit var recyclerView: RecyclerView
     private var adapter = RecyclerViewCategoriesAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(film: Film) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                manager.beginTransaction()
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
                     .replace(R.id.container, DetailsFragment.newInstance(film))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
@@ -56,7 +55,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
         viewModel.getDataFromLocalStorage()
     }
