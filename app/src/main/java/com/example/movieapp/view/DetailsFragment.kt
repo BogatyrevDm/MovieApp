@@ -28,16 +28,15 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val film = arguments?.getParcelable<Film>(BUNDLE_EXTRA)
-        if (film != null) {
-            binding.titleDetails.text = film.title
-            binding.originalTitleDetails.text = film.originalTitle
-            binding.runtimeDetails.text = film.runtime.toString()
-            binding.genresDetails.text = film.genres
-            binding.budgetDetails.text = film.budget.toString()
-            binding.revenueDetails.text = film.revenue.toString()
-            binding.releaseDateDetails.text = film.releaseDate
-            binding.overviewDetails.text = film.overview
+        arguments?.getParcelable<Film>(BUNDLE_EXTRA)?.let { film ->
+                binding.titleDetails.text = film.title
+                binding.originalTitleDetails.text = film.originalTitle
+                binding.runtimeDetails.text = film.runtime.toString()
+                binding.genresDetails.text = film.genres
+                binding.budgetDetails.text = film.budget.toString()
+                binding.revenueDetails.text = film.revenue.toString()
+                binding.releaseDateDetails.text = film.releaseDate
+                binding.overviewDetails.text = film.overview
         }
     }
 
