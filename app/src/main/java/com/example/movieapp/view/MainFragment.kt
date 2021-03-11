@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.example.movieapp.R
 import com.example.movieapp.model.Film
 import com.example.movieapp.viewmodel.AppState
 import com.example.movieapp.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
 
@@ -19,13 +21,12 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     private lateinit var recyclerView: RecyclerView
     private var adapter = RecyclerViewCategoriesAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(film: Film) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                manager.beginTransaction()
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
                     .replace(R.id.container, DetailsFragment.newInstance(film))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
@@ -56,7 +57,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
         viewModel.getDataFromLocalStorage()
     }
@@ -70,11 +70,24 @@ class MainFragment : Fragment() {
             is AppState.Error -> {
                 adapter.setCategories(mapOf())
                 adapter.notifyDataSetChanged()
+                view?.findViewById<LinearLayout>(R.id.mainFragmentRootView)?.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    { viewModel.getDataFromLocalStorage() }
+                )
             }
             is AppState.Loading -> {
-
             }
         }
+    }
+
+    private fun View.showSnackBar(
+        text: String,
+        actionText: String,
+        action: (View) -> Unit,
+        length: Int = Snackbar.LENGTH_INDEFINITE
+    ) {
+        Snackbar.make(this, text, length).setAction(actionText, action).show()
     }
 
     interface OnItemViewClickListener {

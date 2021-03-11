@@ -36,17 +36,18 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onBind(title: String, films: List<Film>?) {
 
-            var titleTV = itemView.findViewById<TextView>(R.id.category_title)
-            titleTV.text = title
-
-            val recyclerView = itemView.findViewById<RecyclerView>(R.id.category_rv)
-            val adapter = RecyclerViewFilmsAdapter(onItemViewClickListener)
-            if (films != null) {
-                adapter.setFilms(films)
+            itemView.apply {
+                findViewById<TextView>(R.id.category_title).text = title
             }
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+
+            itemView.findViewById<RecyclerView>(R.id.category_rv).apply {
+                val adapter = RecyclerViewFilmsAdapter(onItemViewClickListener)
+                films?.let { adapter.setFilms(films) }
+
+                this.adapter = adapter
+                this.layoutManager =
+                    LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            }
         }
     }
 }

@@ -15,7 +15,8 @@ class RecyclerViewFilmsAdapter(private var onItemViewClickListener: MainFragment
     private var dataSource: List<Film> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_view_films, parent, false)
+        val v: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_view_films, parent, false)
         return MyViewHolder(v)
     }
 
@@ -33,23 +34,26 @@ class RecyclerViewFilmsAdapter(private var onItemViewClickListener: MainFragment
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onBind(film: Film) {
-            var titleTV = itemView.findViewById<TextView>(R.id.title)
-            titleTV.text = film.title
 
-            var averageVoteTV = itemView.findViewById<TextView>(R.id.average_vote)
-            averageVoteTV.text = film.averageVote.toString()
-
-            var releasDateTV = itemView.findViewById<TextView>(R.id.releas_date)
-            releasDateTV.text = film.releaseDate
-
-            var iconIV = itemView.findViewById<AppCompatImageView>(R.id.poster)
-            iconIV.setImageResource(R.drawable.screen)
-
-            itemView.findViewById<CardView>(R.id.item_view_root).setOnClickListener({
-                onItemViewClickListener?.onItemViewClick(film)
+            itemView.apply {
+                findViewById<TextView>(R.id.title).text = film.title
             }
 
-            )
+            itemView.apply {
+                findViewById<TextView>(R.id.average_vote).text = film.averageVote.toString()
+            }
+            itemView.apply {
+                findViewById<TextView>(R.id.releas_date).text = film.releaseDate
+            }
+
+            itemView.apply {
+                findViewById<AppCompatImageView>(R.id.poster).setImageResource(R.drawable.screen)
+            }
+            itemView.apply {
+                findViewById<CardView>(R.id.item_view_root).setOnClickListener{
+                    onItemViewClickListener?.onItemViewClick(film)
+                }
+            }
         }
     }
 }
