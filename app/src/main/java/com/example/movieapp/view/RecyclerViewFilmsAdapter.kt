@@ -36,14 +36,14 @@ class RecyclerViewFilmsAdapter(private var onItemViewClickListener: MainFragment
         fun onBind(film: Film) {
 
             itemView.apply {
-                findViewById<TextView>(R.id.title).text = film.title
+                findViewById<TextView>(R.id.title).text = film.filmSummary.title
             }
 
             itemView.apply {
-                findViewById<TextView>(R.id.average_vote).text = film.averageVote.toString()
+                findViewById<TextView>(R.id.average_vote).text = film.filmSummary.averageVote.toString()
             }
             itemView.apply {
-                findViewById<TextView>(R.id.releas_date).text = film.releaseDate
+                findViewById<TextView>(R.id.releas_date).text = film.filmSummary.releaseDate
             }
 
             itemView.apply {
