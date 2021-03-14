@@ -36,8 +36,12 @@ class DetailsFragment : Fragment() {
     private val loadResultReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
-                DETAILS_INTENT_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-
+                DETAILS_INTENT_EMPTY_EXTRA -> processError(DETAILS_INTENT_EMPTY_EXTRA)
+                DETAILS_DATA_EMPTY_EXTRA -> processError(DETAILS_DATA_EMPTY_EXTRA)
+                DETAILS_RESPONSE_EMPTY_EXTRA -> processError(DETAILS_RESPONSE_EMPTY_EXTRA)
+                DETAILS_REQUEST_ERROR_EXTRA -> processError(DETAILS_REQUEST_ERROR_EXTRA)
+                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> processError(DETAILS_REQUEST_ERROR_MESSAGE_EXTRA)
+                DETAILS_URL_MALFORMED_EXTRA -> processError(DETAILS_URL_MALFORMED_EXTRA)
                 DETAILS_RESPONSE_SUCCESS_EXTRA -> intent.getParcelableExtra<FilmDTO>(
                     DETAILS_FILM_EXTRA
                 )?.let {
@@ -48,6 +52,16 @@ class DetailsFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun processError(message:String) {
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_INDEFINITE
+        ).setAction("Reload") {
+            runIntent()
+        }.show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,13 +91,15 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         filmBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Film()
-        requireContext().apply {
-            startService(Intent(this, DetailsService::class.java).apply {
-                putExtra(FILM_ID, filmBundle.filmSummary.id)
-            })
-        }
+        runIntent()
     }
-
+private fun runIntent(){
+    requireContext().apply {
+        startService(Intent(this, DetailsService::class.java).apply {
+            putExtra(FILM_ID, filmBundle.filmSummary.id)
+        })
+    }
+}
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(loadResultReceiver)
         super.onDestroy()
