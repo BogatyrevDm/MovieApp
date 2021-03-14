@@ -1,5 +1,9 @@
 package com.example.movieapp.view
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,31 +11,53 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.movieapp.databinding.FragmentDetailsBinding
 import com.example.movieapp.model.Film
 import com.example.movieapp.model.FilmDTO
 import com.google.android.material.snackbar.Snackbar
 
+const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
+const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
+const val DETAILS_INTENT_EMPTY_EXTRA = "INTENT IS EMPTY"
+const val DETAILS_DATA_EMPTY_EXTRA = "DATA IS EMPTY"
+const val DETAILS_RESPONSE_EMPTY_EXTRA = "RESPONSE IS EMPTY"
+const val DETAILS_REQUEST_ERROR_EXTRA = "REQUEST ERROR"
+const val DETAILS_REQUEST_ERROR_MESSAGE_EXTRA = "REQUEST MESSAGE ERROR"
+const val DETAILS_URL_MALFORMED_EXTRA = "URL MALFORMED"
+const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
+const val DETAILS_FILM_EXTRA = "FILM EXTRA"
+private const val PROCESS_ERROR = "Обработка ошибки"
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var filmBundle: Film
-    private val onLoaderListener: FilmLoader.FilmLoaderListener =
-        object : FilmLoader.FilmLoaderListener {
-            override fun onLoaded(filmDTO: FilmDTO) {
-                displayFilms(filmDTO)
-            }
+    private val loadResultReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
+                DETAILS_INTENT_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
 
-            override fun onFailed(throwable: Throwable) {
-                Snackbar.make(
-                    binding.root,
-                    throwable.stackTraceToString(),
-                    Snackbar.LENGTH_INDEFINITE
-                ).show()
+                DETAILS_RESPONSE_SUCCESS_EXTRA -> intent.getParcelableExtra<FilmDTO>(
+                    DETAILS_FILM_EXTRA
+                )?.let {
+                    displayFilms(
+                        it
+                    )
+                }
             }
-
         }
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+            loadResultReceiver, IntentFilter(
+                DETAILS_INTENT_FILTER
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,10 +77,16 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         filmBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Film()
-        val loader = FilmLoader(onLoaderListener, filmBundle.filmSummary.id)
-        loader.loadFilms()
+        requireContext().apply {
+            startService(Intent(this, DetailsService::class.java).apply {
+                putExtra(FILM_ID, filmBundle.filmSummary.id)
+            })
+        }
+    }
 
-
+    override fun onDestroy() {
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(loadResultReceiver)
+        super.onDestroy()
     }
 
     companion object {
