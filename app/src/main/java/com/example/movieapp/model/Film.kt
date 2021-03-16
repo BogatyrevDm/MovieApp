@@ -17,7 +17,8 @@ data class Film(
     val genres: String = "фэнтези, боевик, приключения",
     val voteCount: Int = 3961,
     val budget: Int = 200000000,
-    val revenue: Int = 159533000
+    val revenue: Int = 159533000,
+    val posterPath:String = ""
 ) : Parcelable
 
 fun GetCategoriesList(): Map<Categories, List<Film>> {
