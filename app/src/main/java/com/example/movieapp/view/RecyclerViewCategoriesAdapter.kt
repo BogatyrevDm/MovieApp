@@ -22,7 +22,16 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val category = Categories.values()[position]
-        holder.onBind(category.toString(), dataSource[category])
+        holder.onBind(getResIdByCategory(category), dataSource[category])
+    }
+
+    private fun getResIdByCategory(category: Categories): Int {
+        return when (category) {
+            Categories.LATEST -> R.string.latest
+            Categories.NOWPLAYING -> R.string.now_playing
+            Categories.POPULAR -> R.string.popular
+            Categories.TOPRATED -> R.string.top_rated
+        }
     }
 
     override fun getItemCount(): Int {
@@ -34,10 +43,11 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun onBind(title: String, films: List<Film>?) {
+        fun onBind(resId: Int, films: List<Film>?) {
 
             itemView.apply {
-                findViewById<TextView>(R.id.category_title).text = title
+                findViewById<TextView>(R.id.category_title).text =
+                    itemView.resources.getString(resId)
             }
 
             itemView.findViewById<RecyclerView>(R.id.category_rv).apply {

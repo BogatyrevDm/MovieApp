@@ -56,17 +56,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/other_size"
-            app:layout_constraintStart_toEndOf="@id/poster_details"
-            app:layout_constraintTop_toBottomOf="@id/runtime_details"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintStart_toEndOf="@id/poster_details"
+            app:layout_constraintTop_toBottomOf="@id/runtime_details" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/average_vote_img_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"
+            app:layout_constraintStart_toEndOf="@id/poster_details"
+            app:layout_constraintTop_toBottomOf="@id/genres_details" />
 
         <TextView
             android:id="@+id/average_vote_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/other_size"
-            app:layout_constraintStart_toEndOf="@id/poster_details"
+            app:layout_constraintStart_toEndOf="@id/average_vote_img_details"
             app:layout_constraintTop_toBottomOf="@id/genres_details" />
 
         <TextView
@@ -114,11 +121,11 @@
 
         <TextView
             android:id="@+id/release_date_details"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/other_size"
-            app:layout_constraintStart_toEndOf="@id/release_date_text_details"
-            app:layout_constraintTop_toBottomOf="@id/revenue_text_details" />
+            app:layout_constraintStart_toEndOf="@id/poster_details"
+            app:layout_constraintTop_toBottomOf="@id/release_date_text_details" />
 
         <TextView
             android:id="@+id/overview_details"

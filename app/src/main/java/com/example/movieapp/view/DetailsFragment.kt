@@ -73,14 +73,14 @@ class DetailsFragment : Fragment() {
     }
 
     private fun displayFilms(film: Film) {
-        binding.titleDetails.text = filmBundle.filmSummary.title
-        binding.originalTitleDetails.text = filmBundle.originalTitle
+        binding.titleDetails.text = film.filmSummary.title
+        binding.originalTitleDetails.text = film.originalTitle
         binding.runtimeDetails.text = film.runtime.toString()
         binding.averageVoteDetails.text = film.filmSummary.averageVote.toString()
         binding.genresDetails.text = film.genres
         binding.budgetDetails.text = film.budget.toString()
         binding.revenueDetails.text = film.revenue.toString()
-        binding.releaseDateDetails.text = filmBundle.filmSummary.releaseDate
+        binding.releaseDateDetails.text = film.filmSummary.releaseDate
         binding.overviewDetails.text = film.overview
         // Picasso.get().load("https://image.tmdb.org/t/p/original/${film.posterPath}").into(binding.posterDetails)
         binding.posterDetails.load("https://image.tmdb.org/t/p/original/${film.posterPath}")

@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class RemoteDataSource {
     private val filmAPI = Retrofit.Builder()
@@ -18,6 +19,6 @@ class RemoteDataSource {
         .build().create(FilmAPI::class.java)
 
     fun getFilmDetails(filmId: String, callback: Callback<FilmDTO>) {
-        filmAPI.getFilm(filmId, BuildConfig.MOVIEDB_API_KEY, "en-EN").enqueue(callback)
+        filmAPI.getFilm(filmId, BuildConfig.MOVIEDB_API_KEY, Locale.getDefault().toLanguageTag()).enqueue(callback)
     }
 }

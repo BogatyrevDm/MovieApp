@@ -1,7 +1,7 @@
 package com.example.movieapp.model
 
-enum class Categories {
-    LATEST {
+enum class Categories  {
+    LATEST{
         override fun toString(): String {
             return "Latest"
         }
