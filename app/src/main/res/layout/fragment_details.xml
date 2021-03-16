@@ -53,11 +53,13 @@
 
         <TextView
             android:id="@+id/genres_details"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/other_size"
             app:layout_constraintStart_toEndOf="@id/poster_details"
-            app:layout_constraintTop_toBottomOf="@id/runtime_details" />
+            app:layout_constraintTop_toBottomOf="@id/runtime_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
         <TextView
             android:id="@+id/average_vote_details"

@@ -11,9 +11,7 @@ class ConnectivityBroadcastReceiver:BroadcastReceiver() {
         StringBuilder().apply {
             append("Сообщение от системы\n")
             append("Action: ${intent.action}")
-            toString().also {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            }
+            Toast.makeText(context, this.toString(), Toast.LENGTH_LONG).show()
         }
     }
 }
