@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
 import com.example.movieapp.databinding.FragmentDetailsBinding
 import com.example.movieapp.model.Film
 import com.example.movieapp.utils.ShowSnackBar
@@ -81,6 +82,7 @@ class DetailsFragment : Fragment() {
         binding.revenueDetails.text = film.revenue.toString()
         binding.releaseDateDetails.text = filmBundle.filmSummary.releaseDate
         binding.overviewDetails.text = film.overview
-        Picasso.get().load("https://image.tmdb.org/t/p/original/${film.posterPath}").into(binding.posterDetails)
+        // Picasso.get().load("https://image.tmdb.org/t/p/original/${film.posterPath}").into(binding.posterDetails)
+        binding.posterDetails.load("https://image.tmdb.org/t/p/original/${film.posterPath}")
     }
 }
