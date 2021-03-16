@@ -14,6 +14,7 @@ import com.example.movieapp.model.Film
 import com.example.movieapp.utils.ShowSnackBar
 import com.example.movieapp.viewmodel.DetailsAppState
 import com.example.movieapp.viewmodel.DetailsViewModel
+import com.squareup.picasso.Picasso
 
 
 class DetailsFragment : Fragment() {
@@ -80,5 +81,6 @@ class DetailsFragment : Fragment() {
         binding.revenueDetails.text = film.revenue.toString()
         binding.releaseDateDetails.text = filmBundle.filmSummary.releaseDate
         binding.overviewDetails.text = film.overview
+        Picasso.get().load("https://image.tmdb.org/t/p/original/${film.posterPath}").into(binding.posterDetails)
     }
 }
