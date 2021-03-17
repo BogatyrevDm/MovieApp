@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Фильмы</string>
     <string name="now_playing">Смотрят сейчас</string>
-    <string name="latest">Последние</string>
+    <string name="upcoming">Скоро выйдут</string>
     <string name="popular">Популярные</string>
     <string name="top_rated">Лучшие</string>
     <string name="release_date">Дата выхода:</string>
