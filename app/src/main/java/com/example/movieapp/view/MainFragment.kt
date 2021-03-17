@@ -58,23 +58,23 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer{ renderData(it) })
-        viewModel.getDataFromLocalStorage()
+        viewModel.liveDataToObserve.observe(viewLifecycleOwner, {
+            renderData(it)
+        })
+        viewModel.getDataFromRemoteSourse()
     }
 
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                adapter.setCategories(appState.movieData)
-                adapter.notifyDataSetChanged()
+                adapter.setCategories(appState.movieData,appState.categoryPosition)
+                adapter.notifyItemChanged(appState.categoryPosition)
             }
             is AppState.Error -> {
-                adapter.setCategories(mapOf())
-                adapter.notifyDataSetChanged()
                 view?.findViewById<LinearLayout>(R.id.mainFragmentRootView)?.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
-                    { viewModel.getDataFromLocalStorage() }
+                    { viewModel.getDataFromRemoteSourse() }
                 )
             }
             is AppState.Loading -> {
