@@ -83,6 +83,6 @@ class DetailsFragment : Fragment() {
         binding.releaseDateDetails.text = film.filmSummary.releaseDate
         binding.overviewDetails.text = film.overview
         // Picasso.get().load("https://image.tmdb.org/t/p/original/${film.posterPath}").into(binding.posterDetails)
-        binding.posterDetails.load("https://image.tmdb.org/t/p/original/${film.posterPath}")
+        binding.posterDetails.load("https://image.tmdb.org/t/p/original/${film.filmSummary.posterPath}")
     }
 }
