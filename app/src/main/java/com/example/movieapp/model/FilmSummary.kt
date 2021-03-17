@@ -5,8 +5,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class FilmSummary(
-    val id:Int = 464052,
-    val title: String = "Wonder Woman 1984",
-    val releaseDate: String = "2020-12-16",
-    val averageVote: Double = 6.9
+    val id:Int = 0,
+    val title: String = "",
+    val releaseDate: String = "",
+    val averageVote: Double = 0.0,
+    val posterPath:String = ""
 ): Parcelable
