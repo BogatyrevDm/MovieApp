@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_size"
             android:gravity="start"
-            android:textSize="@dimen/title_size"
+            android:textSize="@dimen/title_detailed_size"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_size"
             android:gravity="start"
-            android:textSize="@dimen/title_size"
+            android:textSize="@dimen/title_detailed_size"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_details" />
