@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.example.movieapp.R
 import com.example.movieapp.model.Film
 
@@ -47,7 +48,7 @@ class RecyclerViewFilmsAdapter(private var onItemViewClickListener: MainFragment
             }
 
             itemView.apply {
-                findViewById<AppCompatImageView>(R.id.poster).setImageResource(R.drawable.screen)
+                findViewById<AppCompatImageView>(R.id.poster).load("https://image.tmdb.org/t/p/original/${film.filmSummary.posterPath}")
             }
             itemView.apply {
                 findViewById<CardView>(R.id.item_view_root).setOnClickListener{

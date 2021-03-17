@@ -12,7 +12,12 @@ import com.example.movieapp.model.Film
 
 class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<RecyclerViewCategoriesAdapter.MyViewHolder>() {
-    private var dataSource: Map<Categories, List<Film>> = mapOf()
+    private var dataSource: MutableMap<Categories, List<Film>> = mutableMapOf(
+        Categories.NOWPLAYING to listOf(),
+        Categories.POPULAR to listOf(),
+        Categories.TOPRATED to listOf(),
+        Categories.UPCOMING to listOf(),
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v: View = LayoutInflater.from(parent.context)
@@ -27,10 +32,10 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
 
     private fun getResIdByCategory(category: Categories): Int {
         return when (category) {
-            Categories.LATEST -> R.string.latest
             Categories.NOWPLAYING -> R.string.now_playing
             Categories.POPULAR -> R.string.popular
             Categories.TOPRATED -> R.string.top_rated
+            Categories.UPCOMING -> R.string.upcoming
         }
     }
 
@@ -38,8 +43,9 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
         return dataSource.size
     }
 
-    fun setCategories(categoriesMap: Map<Categories, List<Film>>) {
-        dataSource = categoriesMap
+    fun setCategories(filmList: List<Film>, position: Int) {
+        val category = Categories.values()[position]
+        dataSource[category] = filmList
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
