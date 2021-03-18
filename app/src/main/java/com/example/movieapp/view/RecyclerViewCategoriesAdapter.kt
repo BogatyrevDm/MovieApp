@@ -12,7 +12,12 @@ import com.example.movieapp.model.Film
 
 class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<RecyclerViewCategoriesAdapter.MyViewHolder>() {
-    private var dataSource: Map<Categories, List<Film>> = mapOf()
+    private var dataSource: MutableMap<Categories, List<Film>> = mutableMapOf(
+        Categories.NOWPLAYING to listOf(),
+        Categories.POPULAR to listOf(),
+        Categories.TOPRATED to listOf(),
+        Categories.UPCOMING to listOf(),
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v: View = LayoutInflater.from(parent.context)
@@ -22,22 +27,33 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val category = Categories.values()[position]
-        holder.onBind(category.toString(), dataSource[category])
+        holder.onBind(getResIdByCategory(category), dataSource[category])
+    }
+
+    private fun getResIdByCategory(category: Categories): Int {
+        return when (category) {
+            Categories.NOWPLAYING -> R.string.now_playing
+            Categories.POPULAR -> R.string.popular
+            Categories.TOPRATED -> R.string.top_rated
+            Categories.UPCOMING -> R.string.upcoming
+        }
     }
 
     override fun getItemCount(): Int {
         return dataSource.size
     }
 
-    fun setCategories(categoriesMap: Map<Categories, List<Film>>) {
-        dataSource = categoriesMap
+    fun setCategories(filmList: List<Film>, position: Int) {
+        val category = Categories.values()[position]
+        dataSource[category] = filmList
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun onBind(title: String, films: List<Film>?) {
+        fun onBind(resId: Int, films: List<Film>?) {
 
             itemView.apply {
-                findViewById<TextView>(R.id.category_title).text = title
+                findViewById<TextView>(R.id.category_title).text =
+                    itemView.resources.getString(resId)
             }
 
             itemView.findViewById<RecyclerView>(R.id.category_rv).apply {

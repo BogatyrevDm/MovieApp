@@ -1,24 +1,26 @@
 package com.example.movieapp.model
 
-enum class Categories {
-    LATEST {
+enum class Categories()  {
+
+    NOWPLAYING(){
         override fun toString(): String {
-            return "Latest"
+            return "now_playing"
+        }
+                             },
+    POPULAR(){
+        override fun toString(): String {
+            return "popular"
+        }
+    } ,
+    TOPRATED (){
+        override fun toString(): String {
+            return "top_rated"
         }
     },
-    NOWPLAYING {
+    UPCOMING (){
         override fun toString(): String {
-            return "Now playing"
-        }
-    },
-    POPULAR {
-        override fun toString(): String {
-            return "Popular"
-        }
-    },
-    TOPRATED {
-        override fun toString(): String {
-            return "Top rated"
+            return "upcoming"
         }
     }
+
 }
