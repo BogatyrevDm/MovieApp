@@ -67,8 +67,8 @@ class MainFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                adapter.setCategories(appState.movieData,appState.categoryPosition)
-                adapter.notifyItemChanged(appState.categoryPosition)
+                adapter.setCategories(appState)
+                adapter.notifyDataSetChanged()
             }
             is AppState.Error -> {
                 view?.findViewById<LinearLayout>(R.id.mainFragmentRootView)?.showSnackBar(
