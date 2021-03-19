@@ -16,7 +16,8 @@ data class FilmDTO (
     val vote_average: Double?,
     val vote_count: Int?,
     val genres: List<Genre>?,
-    val poster_path:String
+    val poster_path:String,
+    val adult:Boolean = false
 ):Parcelable
 
 @Parcelize
