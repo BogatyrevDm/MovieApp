@@ -7,7 +7,7 @@ import com.example.movieapp.model.FilmsListDTO
 import retrofit2.Callback
 
 interface Repository {
-    fun getFilmsFromServer(category: Categories, callback: Callback<FilmsListDTO>)
+    fun getFilmsFromServer(category: Categories, showAdultContent:Boolean,callback: Callback<FilmsListDTO>)
     fun getFilmsFromLocalStorage(): List<Film>
     fun getFilmCategories(): List<Film>
 }

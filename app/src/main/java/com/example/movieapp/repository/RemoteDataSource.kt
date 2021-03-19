@@ -30,8 +30,8 @@ class RemoteDataSource {
     fun getFilmDetails(filmId: String, callback: Callback<FilmDTO>) {
         filmAPI.getFilm(filmId, BuildConfig.MOVIEDB_API_KEY, Locale.getDefault().toLanguageTag()).enqueue(callback)
     }
-    fun getFilmsDetails(category: Categories, callback: Callback<FilmsListDTO>) {
-        filmsAPI.getFilms(category.toString(),category,BuildConfig.MOVIEDB_API_KEY, Locale.getDefault().toLanguageTag()).enqueue(callback)
+    fun getFilmsDetails(category: Categories,  showAdultContent:Boolean, callback: Callback<FilmsListDTO>) {
+        filmsAPI.getFilms(category.toString(),category,showAdultContent.toString(), BuildConfig.MOVIEDB_API_KEY, Locale.getDefault().toLanguageTag()).enqueue(callback)
 
     }
 }
