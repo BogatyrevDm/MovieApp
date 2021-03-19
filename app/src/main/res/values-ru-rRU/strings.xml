@@ -10,4 +10,5 @@
     <string name="budget">Бюджет:</string>
     <string name="error">Ошибка</string>
     <string name="reload">Перезагрузить</string>
+    <string name="allow_adult_content">Показать контент 18+</string>
 </resources>

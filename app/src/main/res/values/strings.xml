@@ -9,4 +9,5 @@
     <string name="budget">Budget:</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
+    <string name="allow_adult_content">Allow adult content</string>
 </resources>
