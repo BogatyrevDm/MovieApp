@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.R
 import com.example.movieapp.model.Categories
 import com.example.movieapp.model.Film
+import com.example.movieapp.viewmodel.AppState
 
 class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<RecyclerViewCategoriesAdapter.MyViewHolder>() {
@@ -43,9 +44,13 @@ class RecyclerViewCategoriesAdapter(private var onItemViewClickListener: MainFra
         return dataSource.size
     }
 
-    fun setCategories(filmList: List<Film>, position: Int) {
-        val category = Categories.values()[position]
-        dataSource[category] = filmList
+    fun setCategories(appStateSuccess:AppState.Success) {
+        dataSource=   mutableMapOf(
+            Categories.NOWPLAYING to appStateSuccess.NowPlayingData,
+            Categories.POPULAR to appStateSuccess.PopularData,
+            Categories.TOPRATED to appStateSuccess.TopRatedData,
+            Categories.UPCOMING to appStateSuccess.UpComingData,
+        )
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
