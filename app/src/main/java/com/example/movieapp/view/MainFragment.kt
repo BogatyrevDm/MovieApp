@@ -1,12 +1,11 @@
 package com.example.movieapp.view
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +14,8 @@ import com.example.movieapp.model.Film
 import com.example.movieapp.viewmodel.AppState
 import com.example.movieapp.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+
+private const val ADULT_CONTENT_KEY = "ADULT_CONTENT"
 
 class MainFragment : Fragment() {
 
@@ -35,18 +36,28 @@ class MainFragment : Fragment() {
         }
 
     })
-
+    private var showAdultContent = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.item_view_categories, container, false)
+
+        val view = inflater.inflate(R.layout.item_view_categories, container, false)
+        setHasOptionsMenu(true)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initList(view)
+        readAdultContentKey()
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun readAdultContentKey() {
+        activity?.let {
+            showAdultContent = it.getPreferences(Context.MODE_PRIVATE).getBoolean(ADULT_CONTENT_KEY,false)
+        }
     }
 
     private fun initList(view: View) {
@@ -61,7 +72,7 @@ class MainFragment : Fragment() {
         viewModel.liveDataToObserve.observe(viewLifecycleOwner, {
             renderData(it)
         })
-        viewModel.getDataFromRemoteSourse()
+        viewModel.getDataFromRemoteSourse(showAdultContent)
     }
 
     private fun renderData(appState: AppState) {
@@ -74,7 +85,7 @@ class MainFragment : Fragment() {
                 view?.findViewById<LinearLayout>(R.id.mainFragmentRootView)?.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
-                    { viewModel.getDataFromRemoteSourse() }
+                    { viewModel.getDataFromRemoteSourse(showAdultContent) }
                 )
             }
             is AppState.Loading -> {
@@ -93,5 +104,34 @@ class MainFragment : Fragment() {
 
     interface OnItemViewClickListener {
         fun onItemViewClick(film: Film)
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_screen_menu, menu)
+        menu.get(0).isChecked = showAdultContent
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_adult_content -> {
+                showAdultContent = !item.isChecked
+                item.isChecked = showAdultContent
+                saveAdultContentKey()
+                viewModel.getDataFromRemoteSourse(showAdultContent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun saveAdultContentKey() {
+        activity?.let {
+            with(it.getPreferences(Context.MODE_PRIVATE).edit()){
+                putBoolean(ADULT_CONTENT_KEY,showAdultContent)
+                apply()
+            }
+        }
     }
 }
