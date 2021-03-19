@@ -3,8 +3,8 @@ package com.example.movieapp.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.movieapp.model.Categories
-import com.example.movieapp.model.FilmsListDTO
 import com.example.movieapp.model.FilmSummaryDTO
+import com.example.movieapp.model.FilmsListDTO
 import com.example.movieapp.repository.RemoteDataSource
 import com.example.movieapp.repository.Repository
 import com.example.movieapp.repository.RepositoryImpl
@@ -15,11 +15,11 @@ import retrofit2.Response
 
 private const val SERVER_ERROR = "Ошибка сервера"
 private const val REQUEST_ERROR = "Ошибка запроса на сервер"
-private const val CORRUPTED_DATA = "Неполные данные"
 
 class MainViewModel(
     val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
-    private val repositoryIml: Repository = RepositoryImpl(RemoteDataSource())
+    private val repositoryIml: Repository = RepositoryImpl(RemoteDataSource()),
+    private val appStateSuccess: AppState.Success = AppState.Success()
 ) : ViewModel() {
 
     fun getDataFromRemoteSourse() = getFilmsFromRemoteStorage()
@@ -56,11 +56,22 @@ class MainViewModel(
             serverResponse: List<FilmSummaryDTO>,
             categoryTag: Categories
         ): AppState {
-
-            return AppState.Success(
-                convertListDTOToModel(serverResponse),
-                Categories.values().indexOf(categoryTag)
-            )
+            val categoryList = convertListDTOToModel(serverResponse)
+             when (categoryTag) {
+                Categories.NOWPLAYING -> {
+                    appStateSuccess.NowPlayingData = categoryList
+                }
+                Categories.POPULAR -> {
+                    appStateSuccess.PopularData = categoryList
+                }
+                Categories.TOPRATED -> {
+                    appStateSuccess.TopRatedData = categoryList
+                }
+                Categories.UPCOMING -> {
+                    appStateSuccess.UpComingData = categoryList
+                }
+            }
+            return appStateSuccess
         }
     }
 
