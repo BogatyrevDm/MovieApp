@@ -3,18 +3,19 @@ package com.example.movieapp.view
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
+import android.view.View
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.R
+import com.example.movieapp.app.AppState
+import com.example.movieapp.databinding.FragmentMainBinding
 import com.example.movieapp.model.Film
-import com.example.movieapp.viewmodel.AppState
 import com.example.movieapp.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
-
+import com.example.movieapp.utils.ShowSnackBar
 private const val ADULT_CONTENT_KEY = "ADULT_CONTENT"
 
 class MainFragment : Fragment() {
@@ -22,6 +23,9 @@ class MainFragment : Fragment() {
     companion object {
         fun newInstance() = MainFragment()
     }
+
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     private lateinit var recyclerView: RecyclerView
@@ -42,26 +46,26 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val view = inflater.inflate(R.layout.item_view_categories, container, false)
         setHasOptionsMenu(true)
-        return view
+        _binding = FragmentMainBinding.inflate(inflater,container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initList(view)
+        initList()
         readAdultContentKey()
         super.onViewCreated(view, savedInstanceState)
     }
 
     private fun readAdultContentKey() {
         activity?.let {
-            showAdultContent = it.getPreferences(Context.MODE_PRIVATE).getBoolean(ADULT_CONTENT_KEY,false)
+            showAdultContent =
+                it.getPreferences(Context.MODE_PRIVATE).getBoolean(ADULT_CONTENT_KEY, false)
         }
     }
 
-    private fun initList(view: View) {
-        recyclerView = view.findViewById(R.id.category_rv)
+    private fun initList() {
+        recyclerView = binding.categoriesRv
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(context)
@@ -79,10 +83,9 @@ class MainFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 adapter.setCategories(appState)
-                adapter.notifyDataSetChanged()
             }
             is AppState.Error -> {
-                view?.findViewById<LinearLayout>(R.id.mainFragmentRootView)?.showSnackBar(
+                binding.categoriesRv.showSnackBarLocal(
                     getString(R.string.error),
                     getString(R.string.reload),
                     { viewModel.getDataFromRemoteSourse(showAdultContent) }
@@ -93,7 +96,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun View.showSnackBar(
+    private fun View.showSnackBarLocal(
         text: String,
         actionText: String,
         action: (View) -> Unit,
@@ -108,7 +111,7 @@ class MainFragment : Fragment() {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_screen_menu, menu)
+        inflater.inflate(R.menu.main_fragment_menu, menu)
         menu.get(0).isChecked = showAdultContent
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -128,8 +131,8 @@ class MainFragment : Fragment() {
 
     private fun saveAdultContentKey() {
         activity?.let {
-            with(it.getPreferences(Context.MODE_PRIVATE).edit()){
-                putBoolean(ADULT_CONTENT_KEY,showAdultContent)
+            with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                putBoolean(ADULT_CONTENT_KEY, showAdultContent)
                 apply()
             }
         }
