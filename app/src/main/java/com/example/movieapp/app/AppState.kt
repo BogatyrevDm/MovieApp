@@ -1,4 +1,4 @@
-package com.example.movieapp.viewmodel
+package com.example.movieapp.app
 
 import com.example.movieapp.model.Film
 
