@@ -10,5 +10,6 @@ data class FilmSummary(
     val releaseDate: String = "",
     val averageVote: Double = 0.0,
     val posterPath:String = "",
-    val adult:Boolean = false
+    val adult:Boolean = false,
+    var note:String = ""
 ): Parcelable
