@@ -10,4 +10,8 @@
     <string name="error">Error</string>
     <string name="reload">Reload</string>
     <string name="allow_adult_content">Allow adult content</string>
+    <string name="main_title_history">History</string>
+    <string name="clear_history">Clear history</string>
+    <string name="note_text">Note</string>
+    <string name="edit_note">Edit note</string>
 </resources>

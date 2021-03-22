@@ -11,4 +11,8 @@
     <string name="error">Ошибка</string>
     <string name="reload">Перезагрузить</string>
     <string name="allow_adult_content">Показать контент 18+</string>
+    <string name="main_title_history">История</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="note_text">Заметка</string>
+    <string name="edit_note">Редактировать заметку</string>
 </resources>
