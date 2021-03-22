@@ -2,6 +2,7 @@ package com.example.movieapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movieapp.app.AppState
 import com.example.movieapp.model.Categories
 import com.example.movieapp.model.FilmSummaryDTO
 import com.example.movieapp.model.FilmsListDTO
