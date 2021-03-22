@@ -2,8 +2,12 @@ package com.example.movieapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movieapp.app.App.Companion.getDatabaseDAO
+import com.example.movieapp.app.DetailsAppState
 import com.example.movieapp.model.FilmDTO
+import com.example.movieapp.model.FilmSummary
 import com.example.movieapp.repository.DetailsRepositoryImpl
+import com.example.movieapp.repository.LocalRepositoryImpl
 import com.example.movieapp.repository.RemoteDataSource
 import com.example.movieapp.utils.convertDTOToModel
 import retrofit2.Call
@@ -19,11 +23,18 @@ class DetailsViewModel(
     val detailsLiveData: MutableLiveData<DetailsAppState> = MutableLiveData(),
     private val detailsRepositoryImpl: DetailsRepositoryImpl = DetailsRepositoryImpl(
         RemoteDataSource()
-    )
+    ),
+    private val historyRepositoryIml: LocalRepositoryImpl = LocalRepositoryImpl(getDatabaseDAO())
 ) : ViewModel() {
     fun getFilmFromRemoteSourse(filmId: String) {
         detailsLiveData.value = DetailsAppState.Loading
         detailsRepositoryImpl.getFilmDetailsFromServer(filmId, callback)
+    }
+
+    fun saveFilmToDB(filmSummary: FilmSummary) {
+        Thread {
+            historyRepositoryIml.saveHistoryEntity(filmSummary)
+        }.start()
     }
 
     private val callback = object : Callback<FilmDTO> {
