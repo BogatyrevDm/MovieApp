@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,8 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".view.DetailsService" />
-
         <receiver android:name=".view.ConnectivityBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.CONNECTIVITY_ACTION" />

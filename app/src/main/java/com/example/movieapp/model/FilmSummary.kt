@@ -9,5 +9,7 @@ data class FilmSummary(
     val title: String = "",
     val releaseDate: String = "",
     val averageVote: Double = 0.0,
-    val posterPath:String = ""
+    val posterPath:String = "",
+    val adult:Boolean = false,
+    var note:String = ""
 ): Parcelable

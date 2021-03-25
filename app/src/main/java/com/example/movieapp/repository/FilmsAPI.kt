@@ -13,6 +13,7 @@ interface FilmsAPI {
     fun getFilms(
         @Path("categoryID") film: String,
         @Tag category: Categories,
+        @Tag showAdultContent: String,
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Call<FilmsListDTO>

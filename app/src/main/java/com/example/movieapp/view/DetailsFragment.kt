@@ -2,20 +2,18 @@ package com.example.movieapp.view
 
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.api.load
+import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentDetailsBinding
 import com.example.movieapp.model.Film
 import com.example.movieapp.utils.ShowSnackBar
-import com.example.movieapp.viewmodel.DetailsAppState
+import com.example.movieapp.app.DetailsAppState
 import com.example.movieapp.viewmodel.DetailsViewModel
-import com.squareup.picasso.Picasso
 
 
 class DetailsFragment : Fragment() {
@@ -32,7 +30,29 @@ class DetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.details_fragment_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_edit_note -> {
+                activity?.supportFragmentManager?.apply {
+                    beginTransaction().replace(
+                        R.id.container,
+                        NoteFragment.newInstance(filmBundle.filmSummary)
+                    ).addToBackStack("").commitAllowingStateLoss()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
     }
 
     override fun onDestroyView() {
@@ -72,7 +92,12 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    private fun saveFilm(film: Film) {
+        viewModel.saveFilmToDB(film.filmSummary)
+    }
+
     private fun displayFilms(film: Film) {
+        saveFilm(film)
         binding.titleDetails.text = film.filmSummary.title
         binding.originalTitleDetails.text = film.originalTitle
         binding.runtimeDetails.text = film.runtime.toString()
